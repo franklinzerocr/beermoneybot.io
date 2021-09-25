@@ -1,0 +1,88 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.body {
+  background-color: black !important;
+}
+
+.MuiButton-root {
+    background-color: rgb(92, 74, 199) !important;
+  }
+
+  .css-nzinn5-MuiContainer-root{
+    background: rgb(11, 12, 33) !important;
+  }
+
+  .css-nzinn5-MuiContainer-root{
+  color: white !important;
+  border-radius: 1em;
+  }
+
+  .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root {
+    color: white !important;
+  }
+
+  .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input:invalid {
+    background-color: black !important;
+  }
+
+  .css-n7rtur-MuiPaper-root-MuiAppBar-root {
+    background-color: rgb(16, 17, 45) !important;
+  }
+
+  .css-cvumne-MuiDrawer-docked .MuiDrawer-paper {
+    background-color: rgb(16, 17, 45);
+    color: white;
+  }
+
+  .css-i4bv87-MuiSvgIcon-root {
+    color: white;
+  }
+
+.logoSignIn{
+  width: 8rem;
+  background: no-repeat;
+  margin-top: 50%;
+  margin-right: 10%;
+}
+
+.iconoDashboard{
+  width: 50px;
+  margin-right: 2%;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
