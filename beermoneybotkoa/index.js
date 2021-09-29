@@ -5,6 +5,7 @@ const Router = require('@koa/router');
 const json = require('koa-json');
 const koamysql = require('koa-mysql');
 const mysql = require('./mysql')
+var config = require('./mysql/config.js')
 
 const app = new Koa();
 const router = new Router();
@@ -19,7 +20,8 @@ app.use(json())
 //app.use(async ctx => (ctx.body ={msg: 'Hello karli'}))
 
 router.get('/test', ctx => {
-  ctx.body ={name:'Hello Test!!!'};
+  let data = mysql.query()
+  ctx.body ={name: data.Username};
 })
 
 router.post('/px/:id', ctx => {
@@ -27,8 +29,17 @@ router.post('/px/:id', ctx => {
   return (ctx.status = 201)
 })
 
+app.use(async (ctx) => {
+    let data = await mysql.query()
+    ctx.body = {
+        "code": 1,
+        "data": data,
+        "mesg": 'ok'
+    }
+})
+
 app
   .use(router.routes())
   .use(router.allowedMethods());
 
-app.listen(3001);
+app.listen(config.port);

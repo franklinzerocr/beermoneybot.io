@@ -1,17 +1,30 @@
-var mysql      = require('mysql');
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'root',
-  database : 'beermoney_users',
-  port:'8889'
+var mysql = require('mysql');
+var config = require('./config.js')
+
+const connection = mysql.createConnection({
+  host     : config.database.HOST,
+  user     : config.database.USER,
+  password : config.database.PASSWORD,
+  database : config.database.DATABASE,
+  port: config.database.PORT
 });
 
-connection.connect();
+class Mysql {
+    constructor () {
 
-connection.query('SELECT * FROM users', function(err, rows, fields) {
-  if (err) throw err;
-  console.log('The solution is: ');
-});
+    }
+    query () {
+      return new Promise((resolve, reject) => {
+        connection.query('SELECT * from users', function (error, results, fields) {
+            if (error) {
+                throw error
+            };
+            resolve(results)
+            console.log('The solution is: ', results[0]);
+        });
+      })
 
-connection.end();
+    }
+}
+
+module.exports = new Mysql()
