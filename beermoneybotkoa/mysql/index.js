@@ -13,7 +13,7 @@ class Mysql {
     constructor () {
 
     }
-    query () {
+    allUsers() {
       return new Promise((resolve, reject) => {
         connection.query('SELECT * from users', function (error, results, fields) {
             if (error) {
@@ -24,7 +24,20 @@ class Mysql {
         });
       })
 
-    }
+    };
+
+    byUsername(){
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT Username from users', function (error, results, fields) {
+          if (error) {
+              throw error
+          };
+          resolve(results[0])
+          console.log('The username is: ', results[0]);
+      });
+    })
+  };
+  
 }
 
 module.exports = new Mysql()
