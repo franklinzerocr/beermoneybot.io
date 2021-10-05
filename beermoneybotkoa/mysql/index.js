@@ -26,6 +26,31 @@ class Mysql {
 
     };
 
+    getById(idUser){
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT * from users where ID=?',idUser, function (error, results, fields) {
+          if (error) {
+              throw error
+          };
+          resolve(results)
+          console.log('getById: ', results[0]);
+      });
+    })
+  };
+
+  login(username, password){
+  return new Promise((resolve, reject) => {
+    var sql= 'SELECT * FROM users WHERE Email =? and Password=?';
+    connection.query(sql,[username,password], function (error, results, fields) {
+        if (error) {
+            throw error
+        };
+        resolve(results)
+        console.log('Login: ', results[0]);
+    });
+  })
+};
+
     byUsername(){
     return new Promise((resolve, reject) => {
       connection.query('SELECT Username from users', function (error, results, fields) {
@@ -37,7 +62,20 @@ class Mysql {
       });
     })
   };
-  
+
+  update(t_userid,username,id){
+    return new Promise((resolve, reject) => {
+      var sql= 'UPDATE users set T_userid =? , Username=? where id =?';
+      connection.query(sql,[t_userid,username,id], function (error, results, fields) {
+          if (error) {
+              throw error
+          };
+          resolve(results)
+          console.log('Login: ', results[0]);
+      });
+    })
+  };
+
 }
 
 module.exports = new Mysql()
