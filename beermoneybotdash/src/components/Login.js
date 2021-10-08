@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import logoPNG from './LogoPNG.png'
+
 
 function Copyright(props: any) {
   return (
@@ -36,14 +37,38 @@ const theme = createTheme({
 });
 
 export default function SignIn() {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    fetch("http://localhost:3001/users/login", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "http://localhost:3000"
+    }})
+    .then(res => res.json())
+      .then(
+        (result) => {
+         console.log(result)
+        },
+        // Nota: es importante manejar errores aquí y no en
+        // un bloque catch() para que no interceptemos errores
+        // de errores reales en los componentes.
+        (error) => {
+          console.log(error)
+        }
+      )}
+  ,[data])
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const data1 = {"email":data.get('email'), "password": data.get('password')}
+    setData(data1);
     // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    console.log(data);
   };
 
   return (

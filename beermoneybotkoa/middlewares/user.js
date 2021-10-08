@@ -2,13 +2,15 @@ const Koa = require('koa');
 const Router = require('@koa/router');
 const koaBody = require('koa-body');
 const koamysql = require('koa-mysql');
+const cors = require('@koa/cors');
+const proxy = require('koa-proxies')
 const mysql = require('../mysql/index.js')
 
 const users = new Koa();
 const userRouter = new Router();
 
 userRouter
-  .get('/', async (ctx) => {
+  .get('/', cors(), async (ctx) => {
     let data = await mysql.allUsers()
     ctx.body = {
         "code": 1,
@@ -26,7 +28,7 @@ userRouter
         "mesg": 'ok'
     }
   })
-  .post('/', koaBody(),async ctx => {
+  .post('/login', cors(), koaBody(),async ctx => {
     const { email, password } = ctx.request.body;
     let data = await mysql.login(email, password)
     console.log("data login",data)
@@ -71,5 +73,12 @@ userRouter
 
 users.use(userRouter.routes());
 users.use(userRouter.allowedMethods());
+users.use(cors());
+
+users.use(async (ctx, next) => {
+    ctx.set('Access-Control-Allow-Origin', '*');
+    ctx.set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+    await next();
+});
 
 module.exports = users;

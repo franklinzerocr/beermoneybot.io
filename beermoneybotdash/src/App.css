@@ -78,6 +78,10 @@
   margin-right: 2%;
 }
 
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
+  color: white !important
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
