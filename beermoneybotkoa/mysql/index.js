@@ -63,6 +63,18 @@ class Mysql {
     })
   };
 
+  getByEmail(email){
+  return new Promise((resolve, reject) => {
+    connection.query('SELECT Email from users where Email=?',email, function (error, results, fields) {
+        if (error) {
+            throw error
+        };
+        resolve(results[0])
+        console.log('Result byEmail: ', results[0]);
+    });
+  })
+};
+
   update(t_userid,username,id){
     return new Promise((resolve, reject) => {
       var sql= 'UPDATE users set T_userid =? , Username=? where id =?';
@@ -72,6 +84,19 @@ class Mysql {
           };
           resolve(results)
           console.log('Login: ', results[0]);
+      });
+    })
+  };
+
+  register(username, email, password){
+    return new Promise((resolve, reject) => {
+      var sql= 'INSERT INTO users SET Username =? , Email=?, Password =?, T_userid=?';
+      connection.query(sql,[username, email, password, 'prueba'], function (error, results, fields) {
+          if (error) {
+              throw error
+          };
+          resolve(results)
+          console.log('Register: ', results[0]);
       });
     })
   };

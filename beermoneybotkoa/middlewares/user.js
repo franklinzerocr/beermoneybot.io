@@ -5,6 +5,7 @@ const koamysql = require('koa-mysql');
 const cors = require('@koa/cors');
 const proxy = require('koa-proxies')
 const mysql = require('../mysql/index.js')
+const bcrypt = require('bcrypt');
 
 const users = new Koa();
 const userRouter = new Router();
@@ -28,28 +29,36 @@ userRouter
         "mesg": 'ok'
     }
   })
-  .post('/login', cors(), koaBody(),async ctx => {
-    const { email, password } = ctx.request.body;
-    let data = await mysql.login(email, password)
-    console.log("data login",data)
+  .post('/register', cors(), koaBody(),async ctx => {
+    const { username, email, password } = ctx.request.body;
+    password2 = await bcrypt.hash(password, 5);
+    const emailCheck = await mysql.getByEmail(email);
+
+    if(emailCheck.Email != email){
+    let data = await mysql.register(username, email, password2)
+    console.log("data register",data)
     if(data){
       ctx.status = 200;
       ctx.body = {
         code: 1,
-        message: 'Succesfull',
-        email:data[0]["Email"]
+        message: 'Succesfull'
       }
     }else {
       ctx.status = 200;
       ctx.body = {
         code: 0,
-        message: 'Failed',
-        user: {
-          email: data[0]["Email"]
-        }
+        message: 'Failed'
       }
     }
-  })
+  }
+  else {
+    ctx.status = 200;
+    ctx.body = {
+      code: 0,
+      message: 'Email exists'
+  }
+}
+})
   .put('/:id',koaBody(), async ctx => {
     const { id } = ctx.params;
     const { t_userid, username } = ctx.request.body;
