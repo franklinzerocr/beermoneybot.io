@@ -29,12 +29,31 @@ userRouter
         "mesg": 'ok'
     }
   })
+  .post('/login', cors(), koaBody(),async ctx => {
+    const { email, password } = ctx.request.body;
+    const data = await mysql.login(email, password)
+    console.log("data login", data)
+    if( data ){
+      ctx.status = 200;
+      ctx.body = {
+        code: 1,
+        message: 'Succesfull'
+      }
+    }
+    else{
+        ctx.status = 200;
+        ctx.body = {
+          code: 0,
+          message: 'Failed'
+        }
+      }
+  })
   .post('/register', cors(), koaBody(),async ctx => {
     const { username, email, password } = ctx.request.body;
     password2 = await bcrypt.hash(password, 5);
     const emailCheck = await mysql.getByEmail(email);
 
-    if(emailCheck.Email != email){
+    if(emailCheck){
     let data = await mysql.register(username, email, password2)
     console.log("data register",data)
     if(data){

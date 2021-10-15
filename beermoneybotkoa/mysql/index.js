@@ -45,7 +45,13 @@ class Mysql {
         if (error) {
             throw error
         };
-        resolve(results)
+
+        if(results.length == 1){
+        resolve(results[0])
+      }
+        else {
+          resolve(null)
+        }
         console.log('Login: ', results[0]);
     });
   })
@@ -69,7 +75,12 @@ class Mysql {
         if (error) {
             throw error
         };
+        if(results.length == 1){
         resolve(results[0])
+      }
+        else {
+          resolve(null)
+        }
         console.log('Result byEmail: ', results[0]);
     });
   })
@@ -83,7 +94,7 @@ class Mysql {
               throw error
           };
           resolve(results)
-          console.log('Login: ', results[0]);
+          console.log('update: ', results[0]);
       });
     })
   };
