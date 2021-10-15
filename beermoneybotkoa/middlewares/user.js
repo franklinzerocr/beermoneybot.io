@@ -6,9 +6,11 @@ const cors = require('@koa/cors');
 const proxy = require('koa-proxies')
 const mysql = require('../mysql/index.js')
 const bcrypt = require('bcrypt');
+const koaJwt = require('koa-jwt');
 
 const users = new Koa();
 const userRouter = new Router();
+const secret = process.env.JWT_SECRET || 'jwt_secret';
 
 userRouter
   .get('/', cors(), async (ctx) => {

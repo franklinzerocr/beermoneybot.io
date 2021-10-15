@@ -1,18 +1,20 @@
 var mysql = require('mysql');
-var config = require('./config.js')
+require('dotenv/config')
+require('../mysql/index')
 
 const connection = mysql.createConnection({
-  host     : config.database.HOST,
-  user     : config.database.USER,
-  password : config.database.PASSWORD,
-  database : config.database.DATABASE,
-  port: config.database.PORT
+  host     : process.env.HOST_DB,
+  user     : process.env.USER_DB,
+  password : process.env.PASSWORD_DB,
+  database : process.env.DATABASE,
+  port: process.env.PORT_DB
 });
-
+console.log(process.env)
 class Mysql {
     constructor () {
 
     }
+
     allUsers() {
       return new Promise((resolve, reject) => {
         connection.query('SELECT * from users', function (error, results, fields) {
