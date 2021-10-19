@@ -61,23 +61,24 @@ class Mysql {
 
     byUsername(){
     return new Promise((resolve, reject) => {
-      connection.query('SELECT Username from users', function (error, results, fields) {
+      connection.query('SELECT * from users', function (error, results, fields) {
           if (error) {
               throw error
           };
           resolve(results[0])
-          console.log('The username is: ', results[0]);
+          console.log('The user is: ', results[0]);
       });
     })
   };
 
   getByEmail(email){
   return new Promise((resolve, reject) => {
+    console.log(email)
     connection.query('SELECT Email from users where Email=?',email, function (error, results, fields) {
         if (error) {
             throw error
         };
-        if(results.length == 1){
+        if(results.length > 0){
         resolve(results[0])
       }
         else {
@@ -86,6 +87,23 @@ class Mysql {
         console.log('Result byEmail: ', results[0]);
     });
   })
+};
+
+getPasswordByEmail(email){
+return new Promise((resolve, reject) => {
+  connection.query('SELECT Password from users where Email=?',email, function (error, results, fields) {
+      if (error) {
+          throw error
+      };
+      if(results.length == 1){
+      resolve(results[0])
+    }
+      else {
+        resolve(null)
+      }
+      console.log('Result byEmail: ', results[0]);
+  });
+})
 };
 
   update(t_userid,username,id){
