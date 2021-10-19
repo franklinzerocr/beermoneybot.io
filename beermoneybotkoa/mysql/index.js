@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
   database : process.env.DATABASE,
   port: process.env.PORT_DB
 });
-console.log(process.env)
+
 class Mysql {
     constructor () {
 
