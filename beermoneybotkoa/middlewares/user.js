@@ -6,12 +6,14 @@ const cors = require('@koa/cors');
 const proxy = require('koa-proxies')
 const mysql = require('../mysql/index.js')
 const bcrypt = require('bcrypt');
-const koaJwt = require('koa-jwt');
+const jwt = require('koa-jwt');
+const jsonwebtoken = require('jsonwebtoken');
 
 const users = new Koa();
 const userRouter = new Router();
 const secret = process.env.JWT_SECRET || 'jwt_secret';
 const salt = 5;
+
 userRouter
   .get('/', cors(), async (ctx) => {
     let data = await mysql.allUsers()
@@ -38,8 +40,11 @@ userRouter
     if(validPassword){
       ctx.status = 200;
       ctx.body = {
-        code: 1,
-        message: 'Succesfull'
+        token: jsonwebtoken.sign({
+        data: email,
+        //exp in seconds
+        exp: Math.floor(Date.now() / 1000) - (60 * 60) // 60 seconds * 60 minutes = 1 hour
+        }, secret)
       }
     }
     else{
@@ -50,7 +55,7 @@ userRouter
       }
     }
   })
-  .post('/register', cors(), koaBody(),async ctx => {
+  .post('/public/register', cors(), koaBody(), async ctx => {
     const { username, email, password } = ctx.request.body;
     password2 = await bcrypt.hash(password, salt);
     const emailCheck = await mysql.getByEmail(email);
@@ -103,6 +108,11 @@ userRouter
 users.use(userRouter.routes());
 users.use(userRouter.allowedMethods());
 users.use(cors());
+users.use(jwt({
+  secret: secret
+}).unless({
+  path: [/^\/public/]
+}));
 
 users.use(async (ctx, next) => {
     ctx.set('Access-Control-Allow-Origin', '*');

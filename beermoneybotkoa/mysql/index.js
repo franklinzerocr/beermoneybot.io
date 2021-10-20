@@ -101,7 +101,6 @@ return new Promise((resolve, reject) => {
       else {
         resolve(null)
       }
-      console.log('Result byEmail: ', results[0]);
   });
 })
 };
