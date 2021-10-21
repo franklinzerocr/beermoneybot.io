@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -36,39 +37,26 @@ const theme = createTheme({
     },
 });
 
-export default function SignIn() {
-  const [data, setData] = useState({});
+async function loginUser(credentials) {
+ return fetch("http://localhost:3001/users/login", {
+   method: 'POST',
+   headers: {
+     'Content-Type': 'application/json'
+   },
+   body: JSON.stringify(credentials)
+ })
+   .then(data => data.json())
+}
 
-  useEffect(() => {
-    fetch("http://localhost:3001/users/login", {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "http://localhost:3000"
-    }})
-    .then(res => res.json())
-      .then(
-        (result) => {
-         console.log(result)
-        },
-        // Nota: es importante manejar errores aquí y no en
-        // un bloque catch() para que no interceptemos errores
-        // de errores reales en los componentes.
-        (error) => {
-          console.log(error)
-        }
-      )}
-  ,[data])
+export default function Login({ setToken }) {
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const data1 = {"email":data.get('email'), "password": data.get('password')}
-    setData(data1);
-    // eslint-disable-next-line no-console
-    console.log(data);
+    const dataJson = {"email":data.get('email'), "password": data.get('password')}
+
+    const token = await loginUser(dataJson);
+    setToken(token);
   };
 
   return (
@@ -140,4 +128,8 @@ export default function SignIn() {
       </Container>
     </ThemeProvider>
   );
+}
+
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired
 }
