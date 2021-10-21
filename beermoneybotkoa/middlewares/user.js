@@ -36,22 +36,31 @@ userRouter
   .post('/login', cors(), koaBody(),async ctx => {
     const { email, password } = ctx.request.body;
     const passwordHashed = await mysql.getPasswordByEmail(email);
-    const validPassword = await bcrypt.compare(password, passwordHashed.Password);
-    if(validPassword){
-      ctx.status = 200;
-      ctx.body = {
-        token: jsonwebtoken.sign({
-        data: email,
-        //exp in seconds
-        exp: Math.floor(Date.now() / 1000) - (60 * 60) // 60 seconds * 60 minutes = 1 hour
-        }, secret)
+    if(passwordHashed){
+      const validPassword = await bcrypt.compare(password, passwordHashed.Password);
+      if(validPassword){
+        ctx.status = 200;
+        ctx.body = {
+          token: jsonwebtoken.sign({
+          data: email,
+          //exp in seconds
+          exp: Math.floor(Date.now() / 1000) - (60 * 60) // 60 seconds * 60 minutes = 1 hour
+          }, secret)
+        }
+      }
+      else{
+        ctx.status = 200;
+        ctx.body = {
+          code: 0,
+          message: 'Wrong Password'
+        }
       }
     }
     else{
       ctx.status = 200;
       ctx.body = {
         code: 0,
-        message: 'Wrong Password'
+        message: 'Wrong Credentials'
       }
     }
   })

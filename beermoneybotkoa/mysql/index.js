@@ -95,10 +95,11 @@ return new Promise((resolve, reject) => {
       if (error) {
           throw error
       };
-      if(results.length == 1){
+      if(results.length > 0){
       resolve(results[0])
     }
       else {
+        console.log("entra ")
         resolve(null)
       }
   });

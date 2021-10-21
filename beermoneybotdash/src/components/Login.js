@@ -37,26 +37,22 @@ const theme = createTheme({
     },
 });
 
-async function loginUser(credentials) {
- return fetch("http://localhost:3001/users/login", {
-   method: 'POST',
-   headers: {
-     'Content-Type': 'application/json'
-   },
-   body: JSON.stringify(credentials)
- })
-   .then(data => data.json())
-}
-
 export default function Login({ setToken }) {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const dataJson = {"email":data.get('email'), "password": data.get('password')}
 
-    const token = await loginUser(dataJson);
-    setToken(token);
+    const dataJson = {"email":data.get('email'), "password": data.get('password')}
+    const token = await fetch('http://localhost:3001/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+        body: JSON.stringify(dataJson)
+      });
+    let result = await token.json();
+    setToken(result.token);
   };
 
   return (
