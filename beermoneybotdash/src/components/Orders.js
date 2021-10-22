@@ -19,6 +19,16 @@ function createData(
   return { id, date, name, shipTo, paymentMethod, amount };
 }
 
+// async function walletById(id) {
+//  return fetch(`http://localhost:3001/getById/${id}`, {
+//    method: 'GET',
+//    headers: {
+//      'Content-Type': 'application/json'
+//    }
+//  }).then(data => data.json())
+// }
+
+
 const rows = [
   createData(
     0,
@@ -60,17 +70,18 @@ function preventDefault(event: React.MouseEvent) {
 }
 
 export default function Orders() {
+
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
+      <Title>Wallet</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+            <TableCell>BTC</TableCell>
+            <TableCell>USDT</TableCell>
+            <TableCell>BUSD</TableCell>
+            <TableCell>ETH</TableCell>
+            <TableCell align="right">Beermoney</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
