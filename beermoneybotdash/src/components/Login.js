@@ -52,7 +52,12 @@ export default function Login({ setToken }) {
         body: JSON.stringify(dataJson)
       });
     let result = await token.json();
-    setToken(result.token);
+    if(result.code > 0){
+      setToken(result.token);
+      sessionStorage.setItem('id',result.id )
+    }
+    //ELSE SHOW A POPUP WITH CREDENTIALS ERROR
+
   };
 
   return (

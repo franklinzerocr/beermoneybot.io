@@ -41,11 +41,13 @@ userRouter
       if(validPassword){
         ctx.status = 200;
         ctx.body = {
+          code: 1,
           token: jsonwebtoken.sign({
           data: email,
           //exp in seconds
           exp: Math.floor(Date.now() / 1000) - (60 * 60) // 60 seconds * 60 minutes = 1 hour
-          }, secret)
+        }, secret),
+        id:passwordHashed.ID
         }
       }
       else{

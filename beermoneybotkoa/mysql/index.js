@@ -91,7 +91,7 @@ class Mysql {
 
 getPasswordByEmail(email){
 return new Promise((resolve, reject) => {
-  connection.query('SELECT Password from users where Email=?',email, function (error, results, fields) {
+  connection.query('SELECT ID, Password from users where Email=?',email, function (error, results, fields) {
       if (error) {
           throw error
       };

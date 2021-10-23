@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState } from "react";
 import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -19,14 +19,20 @@ function createData(
   return { id, date, name, shipTo, paymentMethod, amount };
 }
 
-// async function walletById(id) {
-//  return fetch(`http://localhost:3001/getById/${id}`, {
-//    method: 'GET',
-//    headers: {
-//      'Content-Type': 'application/json'
-//    }
-//  }).then(data => data.json())
-// }
+// const data = async () => {
+//   let id  = sessionStorage.getItem("id")
+//   const data = await fetch(`http://localhost:3001/users/${id}`, {
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json;charset=utf-8'
+//     }
+//     });
+//   let result = await data.json();
+//   if(result.code > 0){
+//     console.log(result)
+//   }
+//
+// };
 
 
 const rows = [
@@ -70,6 +76,32 @@ function preventDefault(event: React.MouseEvent) {
 }
 
 export default function Orders() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    //let id = sessionStorage.getItem("id")
+
+    // fetch(`http://localhost:3001/users/13`, {
+    //       method: "GET",
+    //       headers: {
+    //         Accept: "application/json",
+    //         "Content-Type": "application/json"
+    //      }
+    //    }).then(res => {
+    //       let response = res.data;
+    //       console.log(res.data)
+    //       let responseToShow = []
+    //       for (let i=0; i<response.length ; i++){
+    //         if(response.code > 0 )
+    //         responseToShow.push(response[i]);
+    //       }
+    //       console.log(response)
+    //       setData(responseToShow);
+    //    })
+    //    .catch(error=>{
+    //        console.log("Error")
+    //    })
+}, [])
 
   return (
     <React.Fragment>
