@@ -79,28 +79,21 @@ export default function Orders() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    //let id = sessionStorage.getItem("id")
+    let id = sessionStorage.getItem("id")
 
-    // fetch(`http://localhost:3001/users/13`, {
-    //       method: "GET",
-    //       headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json"
-    //      }
-    //    }).then(res => {
-    //       let response = res.data;
-    //       console.log(res.data)
-    //       let responseToShow = []
-    //       for (let i=0; i<response.length ; i++){
-    //         if(response.code > 0 )
-    //         responseToShow.push(response[i]);
-    //       }
-    //       console.log(response)
-    //       setData(responseToShow);
-    //    })
-    //    .catch(error=>{
-    //        console.log("Error")
-    //    })
+    fetch(`http://localhost:3001/users/${id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          }
+       }).then(response => response.json())
+       .then(res => {
+            setData(res.data[0])
+            console.log(res.data[0])
+          })
+       .catch(error=>{
+           console.log("Error")
+       })
 }, [])
 
   return (
@@ -117,15 +110,15 @@ export default function Orders() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+          {
+            <TableRow key={data.ID}>
+              <TableCell>{data.USDT}</TableCell>
+              <TableCell>{data.BTC}</TableCell>
+              <TableCell>{data.BUSD}</TableCell>
+              <TableCell>{data.ETH}</TableCell>
+              <TableCell align="right">{`$${data.BTC}`}</TableCell>
             </TableRow>
-          ))}
+          }
         </TableBody>
       </Table>
       <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>

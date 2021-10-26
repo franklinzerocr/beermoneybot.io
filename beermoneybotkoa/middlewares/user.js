@@ -23,7 +23,7 @@ userRouter
         "mesg": 'ok'
     }
   })
-  .get('/:id', async (ctx) => {
+  .get('/:id',cors(), async (ctx) => {
     const { id } = ctx.params;
     console.log(`Get user with id ${id}`);
     let data = await mysql.getById(id)
@@ -118,7 +118,14 @@ userRouter
 
 users.use(userRouter.routes());
 users.use(userRouter.allowedMethods());
-users.use(cors());
+// var options = {
+//   origin: true,
+//   methods: 'GET,HEAD,PUT,POST,DELETE'
+// };
+users.use(cors({
+    origin: '*'
+}));
+
 users.use(jwt({
   secret: secret
 }).unless({

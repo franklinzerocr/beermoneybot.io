@@ -2,6 +2,7 @@
 require('dotenv/config')
 require('./index')
 const Koa = require('koa');
+const cors = require('@koa/cors');
 const users = require('./middlewares/user.js')
 const koaBody = require('koa-body');
 const mount = require('koa-mount');
@@ -15,4 +16,7 @@ app.use(async(ctx,next) => {
 })
 
 app.use(mount('/users', users));
+app.use(cors({
+    origin: '*'
+}));
 app.listen(process.env.PORT);
