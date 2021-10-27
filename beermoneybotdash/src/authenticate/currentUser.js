@@ -7,9 +7,10 @@ export const setCurrentUser = decoded => {//si se loguea , setear datos del usua
   };
 };
 
-export const logoutUser = (dispatch) => {//logout
+export const logoutUser = () => {//logout
 
   sessionStorage.removeItem("token");
-  console.log("logout",sessionStorage.getItem("token"));
-  dispatch(setCurrentUser({}));
+  sessionStorage.removeItem("id");
+  window.location.reload();
+  //dispatch(setCurrentUser({}));
 };

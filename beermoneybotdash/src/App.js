@@ -9,7 +9,7 @@ import useToken from './authenticate/useToken.js';
 
 function App() {
   const { token, setToken } = useToken();
-console.log(token, setToken)
+
   if(!token) {
    return <Login setToken={setToken} />
  }

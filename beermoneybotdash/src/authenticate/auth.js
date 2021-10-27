@@ -9,12 +9,14 @@ const Auth = props => {
         isAuthenticated: null,
         user: {}
     });
+    console.log(stateUser);
     const [showChild, setShowChild] = useState(false);
 
     useEffect(() => {
-        if (sessionStorage.jwt) {
-            const decoded = sessionStorage.jwt ? sessionStorage.jwt : "";
-            console.log(sessionStorage.jwt);
+      console.log("entra aqui")
+        if (sessionStorage.token) {
+            const decoded = sessionStorage.token ? sessionStorage.token : "";
+            console.log("entra en useEffect auth",sessionStorage.jwt);
             dispatch(setCurrentUser(jwt_decode(decoded)));
         }
         setShowChild(true);
