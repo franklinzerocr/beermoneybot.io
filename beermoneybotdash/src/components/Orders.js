@@ -16,8 +16,8 @@ export default function Orders() {
 
   useEffect(() => {
     let id = sessionStorage.getItem("id")
-
-    fetch(`http://localhost:3001/users/${id}`, {
+    const IP = process.env.REACT_APP_IP
+    fetch(IP+`users/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'
