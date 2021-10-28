@@ -38,26 +38,33 @@ const theme = createTheme({
 });
 
 export default function Login({ setToken }) {
+const IP = process.env.REACT_APP_IP
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
     const dataJson = {"email":data.get('email'), "password": data.get('password')}
-    const token = await fetch('http://localhost:3001/users/login', {
+
+    const token = await fetch(IP+'users/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
         body: JSON.stringify(dataJson)
-      });
+      }).catch(err => {
+        alert('The server is down');
+        window.location.reload();
+    });;
     let result = await token.json();
-    if(result.code > 0){
+  
+    if(result.code === 2)
+    alert('Wrong credentials.')
+    else if(result.code=== 1)
+    alert('Wrong password.')
+    else if(result.code === 0){
       setToken(result.token);
       sessionStorage.setItem('id',result.id )
     }
-    //ELSE SHOW A POPUP WITH CREDENTIALS ERROR
-
   };
 
   return (

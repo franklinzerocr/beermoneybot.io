@@ -41,7 +41,7 @@ userRouter
       if(validPassword){
         ctx.status = 200;
         ctx.body = {
-          code: 1,
+          code: 0,
           token: jsonwebtoken.sign({
           data: email,
           //exp in seconds
@@ -53,7 +53,7 @@ userRouter
       else{
         ctx.status = 200;
         ctx.body = {
-          code: 0,
+          code: 1,
           message: 'Wrong Password'
         }
       }
@@ -61,7 +61,7 @@ userRouter
     else{
       ctx.status = 200;
       ctx.body = {
-        code: 0,
+        code: 2,
         message: 'Wrong Credentials'
       }
     }
