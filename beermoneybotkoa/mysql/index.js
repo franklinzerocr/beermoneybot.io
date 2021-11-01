@@ -132,6 +132,18 @@ return new Promise((resolve, reject) => {
     })
   };
 
+  getWalletById(idUser){
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT * from wallet_address where FK_USER=?',idUser, function (error, results, fields) {
+          if (error) {
+              throw error
+          };
+          resolve(results)
+          console.log('getWalletById: ', results[0]);
+      });
+    })
+  };
+
 }
 
 module.exports = new Mysql()
