@@ -15,6 +15,7 @@ class Mysql {
 
     }
 
+//USERS
     allUsers() {
       return new Promise((resolve, reject) => {
         connection.query('SELECT * from users', function (error, results, fields) {
@@ -132,6 +133,7 @@ return new Promise((resolve, reject) => {
     })
   };
 
+//WALLET
   getWalletById(idUser){
     return new Promise((resolve, reject) => {
       connection.query('SELECT * from wallet_address where FK_USER=?',idUser, function (error, results, fields) {
@@ -140,6 +142,45 @@ return new Promise((resolve, reject) => {
           };
           resolve(results)
           console.log('getWalletById: ', results[0]);
+      });
+    })
+  };
+
+  //OPERATION
+  getOperationByIdUser(idUser){
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT * from operations where FK_USER=?',idUser, function (error, results, fields) {
+          if (error) {
+              throw error
+          };
+          resolve(results)
+          console.log('getoperationByIdUser: ', results[0]);
+      });
+    })
+  };
+
+  //TRADING POOL
+  getTradingPoolById(id){
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT * from trading_pool where ID=?',idUser, function (error, results, fields) {
+          if (error) {
+              throw error
+          };
+          resolve(results)
+          console.log('getTradingPoolById: ', results[0]);
+      });
+    })
+  };
+
+  //FUNDS
+  getFundById(id){
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT * from funds where ID=?',idUser, function (error, results, fields) {
+          if (error) {
+              throw error
+          };
+          resolve(results)
+          console.log('getFundById: ', results[0]);
       });
     })
   };
