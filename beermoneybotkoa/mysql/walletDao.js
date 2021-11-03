@@ -10,25 +10,23 @@ const connection = mysql.createConnection({
   port: process.env.PORT_DB
 });
 
-class Mysql {
+class walletDao {
     constructor () {
 
     }
 
-
-  //FUNDS
-  getFundById(id){
+  getWalletById(idUser){
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * from funds where ID=?',id, function (error, results, fields) {
+      connection.query('SELECT * from wallet_address where FK_USER=?',idUser, function (error, results, fields) {
           if (error) {
               throw error
           };
           resolve(results)
-          console.log('getFundById: ', results[0]);
+          console.log('getWalletById: ', results[0]);
       });
     })
   };
 
 }
 
-module.exports = new Mysql()
+module.exports = new walletDao()

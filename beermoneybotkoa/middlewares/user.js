@@ -4,7 +4,7 @@ const koaBody = require('koa-body');
 const koamysql = require('koa-mysql');
 const cors = require('@koa/cors');
 const proxy = require('koa-proxies')
-const mysql = require('../mysql/index.js')
+const userDao = require('../mysql/userDao.js')
 const bcrypt = require('bcrypt');
 const jwt = require('koa-jwt');
 const jsonwebtoken = require('jsonwebtoken');
@@ -16,7 +16,7 @@ const salt = 5;
 
 userRouter
   .get('/', cors(), async (ctx) => {
-    let data = await mysql.allUsers()
+    let data = await userDao.allUsers()
     ctx.body = {
         "code": 1,
         "data": data,
@@ -26,16 +26,23 @@ userRouter
   .get('/:id',cors(), async (ctx) => {
     const { id } = ctx.params;
     console.log(`Get user with id ${id}`);
-    let data = await mysql.getById(id)
+    let data = await userDao.getById(id)
+    if(data === null){
+      ctx.body = {
+        code: 1,
+        message: 'Wrong id'
+      }
+    }else{
     ctx.body = {
-        "code": 1,
+        "code": 0,
         "data": data,
         "mesg": 'ok'
     }
+  }
   })
   .post('/login', cors(), koaBody(),async ctx => {
     const { email, password } = ctx.request.body;
-    const passwordHashed = await mysql.getPasswordByEmail(email);
+    const passwordHashed = await userDao.getPasswordByEmail(email);
     if(passwordHashed){
       const validPassword = await bcrypt.compare(password, passwordHashed.Password);
       if(validPassword){
@@ -69,7 +76,7 @@ userRouter
   .post('/public/register', cors(), koaBody(), async ctx => {
     const { username, email, password } = ctx.request.body;
     password2 = await bcrypt.hash(password, salt);
-    const emailCheck = await mysql.getByEmail(email);
+    const emailCheck = await userDao.getByEmail(email);
     if(emailCheck == null){
     let data = await mysql.register(username, email, password2)
     console.log("data register",data)
@@ -98,7 +105,7 @@ userRouter
   .put('/:id',koaBody(), async ctx => {
     const { id } = ctx.params;
     const { t_userid, username } = ctx.request.body;
-    let data = await mysql.update(t_userid, username,id)
+    let data = await userDao.update(t_userid, username,id)
     console.log("update",data)
     if(data){
       ctx.status = 200;
@@ -117,7 +124,7 @@ userRouter
 
 
 users.use(userRouter.routes());
-users.use(userRouter.allowedMethods());
+//users.use(userRouter.allowedMethods());
 // var options = {
 //   origin: true,
 //   methods: 'GET,HEAD,PUT,POST,DELETE'
@@ -126,11 +133,13 @@ users.use(cors({
     origin: '*'
 }));
 
+var unprotected = [
+  /\/login*/
+];
+
 users.use(jwt({
   secret: secret
-}).unless({
-  path: [/^\/public/]
-}));
+}).unless({path:['/register','/login']}));
 
 users.use(async (ctx, next) => {
     ctx.set('Access-Control-Allow-Origin', '*');
