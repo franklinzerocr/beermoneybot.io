@@ -1,14 +1,6 @@
 var mysql = require('mysql');
+var {CONNECTION} = require('../DAO/index');
 require('dotenv/config')
-require('../mysql/index')
-
-const connection = mysql.createConnection({
-  host     : process.env.HOST_DB,
-  user     : process.env.USER_DB,
-  password : process.env.PASSWORD_DB,
-  database : process.env.DATABASE,
-  port: process.env.PORT_DB
-});
 
 class userDao {
     constructor () {
@@ -17,7 +9,7 @@ class userDao {
 
     allUsers() {
       return new Promise((resolve, reject) => {
-        connection.query('SELECT * from users', function (error, results, fields) {
+        CONNECTION.query('SELECT * from users', function (error, results, fields) {
             if (error) {
                 throw error
             };
@@ -30,7 +22,7 @@ class userDao {
 
     getById(idUser){
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * from users where ID=?',idUser, function (error, results, fields) {
+      CONNECTION.query('SELECT * from users where ID=?',idUser, function (error, results, fields) {
           if (error) {
               throw error
           };
@@ -48,7 +40,7 @@ class userDao {
   login(username, password){
   return new Promise((resolve, reject) => {
     var sql= 'SELECT * FROM users WHERE Email =? and Password=?';
-    connection.query(sql,[username,password], function (error, results, fields) {
+    CONNECTION.query(sql,[username,password], function (error, results, fields) {
         if (error) {
             throw error
         };
@@ -66,7 +58,7 @@ class userDao {
 
     byUsername(){
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * from users', function (error, results, fields) {
+      CONNECTION.query('SELECT * from users', function (error, results, fields) {
           if (error) {
               throw error
           };
@@ -79,7 +71,7 @@ class userDao {
   getByEmail(email){
   return new Promise((resolve, reject) => {
     console.log(email)
-    connection.query('SELECT Email from users where Email=?',email, function (error, results, fields) {
+    CONNECTION.query('SELECT Email from users where Email=?',email, function (error, results, fields) {
         if (error) {
             throw error
         };
@@ -96,7 +88,7 @@ class userDao {
 
 getPasswordByEmail(email){
 return new Promise((resolve, reject) => {
-  connection.query('SELECT ID, Password from users where Email=?',email, function (error, results, fields) {
+  CONNECTION.query('SELECT ID, Password from users where Email=?',email, function (error, results, fields) {
       if (error) {
           throw error
       };
@@ -114,7 +106,7 @@ return new Promise((resolve, reject) => {
   update(t_userid,username,id){
     return new Promise((resolve, reject) => {
       var sql= 'UPDATE users set T_userid =? , Username=? where id =?';
-      connection.query(sql,[t_userid,username,id], function (error, results, fields) {
+      CONNECTION.query(sql,[t_userid,username,id], function (error, results, fields) {
           if (error) {
               throw error
           };
@@ -127,7 +119,7 @@ return new Promise((resolve, reject) => {
   register(username, email, password){
     return new Promise((resolve, reject) => {
       var sql= 'INSERT INTO users SET Username =? , Email=?, Password =?, T_userid=?';
-      connection.query(sql,[username, email, password, 'prueba'], function (error, results, fields) {
+      CONNECTION.query(sql,[username, email, password, 'prueba'], function (error, results, fields) {
           if (error) {
               throw error
           };

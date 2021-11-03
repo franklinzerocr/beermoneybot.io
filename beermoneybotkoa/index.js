@@ -3,11 +3,11 @@ require('dotenv/config')
 require('./index')
 const Koa = require('koa');
 const cors = require('@koa/cors');
-const users = require('./middlewares/user.js')
-const wallet = require('./middlewares/wallet.js')
-const operation = require('./middlewares/operation.js')
-const trading = require('./middlewares/trading_pool.js')
-const funds = require('./middlewares/funds.js')
+const users = require('./Services/user.js')
+const wallet = require('./Services/wallet.js')
+const operation = require('./Services/operation.js')
+const trading = require('./Services/trading_pool.js')
+const funds = require('./Services/funds.js')
 const koaBody = require('koa-body');
 const mount = require('koa-mount');
 

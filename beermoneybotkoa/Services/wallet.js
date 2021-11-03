@@ -4,16 +4,16 @@ const koaBody = require('koa-body');
 const koamysql = require('koa-mysql');
 const cors = require('@koa/cors');
 const proxy = require('koa-proxies')
-const tradingDao = require('../mysql/tradingDao.js')
+const walletDao = require('../DAO/walletDao.js')
 const jsonwebtoken = require('jsonwebtoken');
 
-const trading = new Koa();
-const tradingRouter = new Router();
+const wallet = new Koa();
+const walletRouter = new Router();
 
-tradingRouter
+walletRouter
   .get('/:id',cors(), async (ctx) => {
     const { id } = ctx.params;
-    let data = await tradingDao.getTradingPoolById(id)
+    let data = await walletDao.getWalletById(id)
     ctx.body = {
         "code": 1,
         "data": data,
@@ -21,7 +21,7 @@ tradingRouter
     }
   })
 
-  trading.use(tradingRouter.routes());
-  trading.use(tradingRouter.allowedMethods());
+  wallet.use(walletRouter.routes());
+  wallet.use(walletRouter.allowedMethods());
 
-  module.exports = trading;
+  module.exports = wallet;

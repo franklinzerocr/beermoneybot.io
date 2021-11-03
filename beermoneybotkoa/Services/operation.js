@@ -4,7 +4,7 @@ const koaBody = require('koa-body');
 const koamysql = require('koa-mysql');
 const cors = require('@koa/cors');
 const proxy = require('koa-proxies')
-const operationDao = require('../mysql/operationDao.js')
+const operationDao = require('../DAO/operationDao.js')
 const jsonwebtoken = require('jsonwebtoken');
 
 const operation = new Koa();
